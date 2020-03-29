@@ -1,0 +1,96 @@
+var field;
+
+class Field {
+    constructor(colunas, linhas, containerId){
+        this.colunas = colunas;
+        this.linhas = linhas;
+        this.container = document.querySelector(containerId);
+        this.createField();
+        
+    }
+
+
+    createField(){
+        var field = [];
+        for(var i = 0; i < this.linhas; i++){
+            field[i] = [];
+            for(var j = 0; j < this.colunas; j++){
+                field[i].push(this.createRock())
+            }
+        }
+        this.field = field;
+        this.drawField();
+    }
+
+    createRock() {
+        return Math.trunc(Math.random() * 5) === 1 ? '@' : '';
+    }
+
+    drawField() {
+        var template = '';
+        for(var i = 0; i < this.linhas; i++){
+            template += '<tr>';
+            for(var j = 0; j < this.colunas; j++){
+                template += `<td>${this.field[i][j]}</td>`;
+            }
+            template += '</tr>';
+        }
+        this.container.innerHTML = template;
+    }
+}
+
+
+class Jogador {
+    constructor(field, x, y, face){
+        this.face = face;
+        this.x = x;
+        this.y = y;
+        this.table = field;
+        this.setPosition(this.x, this.y);
+
+    }
+
+    up() {
+        if(this.y > 0) {
+            this.setPosition(this.x, this.y - 1);
+        }
+    }
+
+    dow() {
+        if(this.y +  1 < this.table.linhas) {
+            this.setPosition(this.x, this.y + 1);
+        }
+    }
+
+    left() {
+        if(this.x > 0) {
+            this.setPosition(this.x - 1, this.y);
+        }
+    }
+
+    rigth() {
+        if(this.x + 1 < this.table.colunas) {
+            this.setPosition(this.x + 1, this.y);
+        }
+    }
+
+    setPosition(x, y) {
+        if(this.table.field[y][x] === '') {
+            this.table.field[this.y][this.x] = '';
+            this.x = x;
+            this.y = y;
+            this.table.field[this.y][this.x] = this.face;
+            this.table.drawField();
+        }
+    }
+}
+
+class Player extends Jogador {
+    constructor(field) {
+        super(field, 0, 0, 'o_O');
+    }
+}
+
+
+field = new Field(3, 4, '#myTable');
+new Jogador(field, 0, 0, 'o_O');
