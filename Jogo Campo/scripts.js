@@ -46,7 +46,9 @@ class Jogador {
         this.x = x;
         this.y = y;
         this.table = field;
-        this.setPosition(this.x, this.y);
+        if(!this.setPosition(this.x, this.y)) {
+            throw Error();
+        }
 
     }
 
@@ -81,7 +83,9 @@ class Jogador {
             this.y = y;
             this.table.field[this.y][this.x] = this.face;
             this.table.drawField();
+            return true;
         }
+        return false;
     }
 }
 
@@ -91,6 +95,14 @@ class Player extends Jogador {
     }
 }
 
+function startField(){ 
+    field = new Field(3, 4, '#myTable');
+    try {
+        player = new Player(field);
+    }catch(e){
+        console.log('starting field again');
+        startField();
+    }
+}
 
-field = new Field(3, 4, '#myTable');
-new Jogador(field, 0, 0, 'o_O');
+startField();
