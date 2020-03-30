@@ -1,4 +1,4 @@
-var field;
+var field, player;
 
 class Field {
     constructor(colunas, linhas, containerId){
@@ -15,7 +15,7 @@ class Field {
         for(var i = 0; i < this.linhas; i++){
             field[i] = [];
             for(var j = 0; j < this.colunas; j++){
-                field[i].push(this.createRock())
+                field[i].push(this.createRock());
             }
         }
         this.field = field;
@@ -116,8 +116,13 @@ class Npc extends Jogador {
 }
 
 function startField(){ 
-    field = new Field(3, 4, '#myTable');
-    try {
+    var colunas = document.querySelector('#colunas').value || 3,
+         linhas = document.querySelector('#linhas').value || 3;
+    
+    document.querySelector('button').disabled = true;
+
+    field = new Field(colunas, linhas, '#myTable');
+    try{
         player = new Player(field);
     }catch(e){
         console.log('starting field again');
@@ -125,4 +130,18 @@ function startField(){
     }
 }
 
-startField();
+window.addEventListener('Keyup', function(event) {
+    if(player) {
+        const A = 65,
+              S = 83,
+              D = 68,
+              W = 87;
+
+        switch(event.keyCode) {
+            case A: player.left(); break;
+            case S: player.down(); break;
+            case D: player.rigth(); break;
+            case W: player.up(); break;
+        }
+    }
+})
