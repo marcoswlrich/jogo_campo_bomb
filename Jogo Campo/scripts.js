@@ -58,7 +58,7 @@ class Jogador {
         }
     }
 
-    dow() {
+    down() {
         if(this.y +  1 < this.table.linhas) {
             this.setPosition(this.x, this.y + 1);
         }
@@ -92,6 +92,26 @@ class Jogador {
 class Player extends Jogador {
     constructor(field) {
         super(field, 0, 0, 'o_O');
+    }
+}
+
+class Npc extends Jogador {
+    constructor(field) {
+        var x = Math.trunc(Math.random()*field.colunas),
+            y = Math.trunc(Math.random()*field.linhas); 
+
+        super(field, x, y, '-_-');
+        setInterval(this.walk.bind(this), 500);
+    }
+
+    walk() {
+        var direction = Math.trunc(Math.random()*4) + 1;
+        switch(direction) {
+            case 1: this.up(); break;
+            case 2: this.down(); break;
+            case 3: this.rigth(); break;
+            case 4: this.left(); break;
+        }
     }
 }
 
